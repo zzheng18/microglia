@@ -5,7 +5,7 @@ import anndata as ad
 # process atac_mtg
 n_top_genes = 5000
 
-atac_mtg = sc.read_h5ad('/home/icb/zihe.zheng/projects/microglia/data/SEAAD/microglia_SEAAD_MTG_ATAC.h5ad')
+atac_mtg = sc.read_h5ad('/lustre/groups/ml01/projects/2024_microglia_zihe.zheng/SEAAD/microglia_SEAAD_MTG_ATAC.h5ad')
 # remove mislabeled obs
 atac_mtg = atac_mtg[~atac_mtg.obs['Supertype'].isin(['n_genes', 'fraction_mito', 'doublet_score','cluster_fraction_mito_flag','cluster_doublet_score_flag','cluster_fraction_ribo_flag', 'cluster_n_genes_flag'])]
 
@@ -13,10 +13,10 @@ sc.pp.normalize_per_cell(atac_mtg, counts_per_cell_after=1e4)
 sc.pp.log1p(atac_mtg)
 sc.pp.highly_variable_genes(atac_mtg, n_top_genes=n_top_genes, subset=True)
 
-rna_mtg = sc.read_h5ad('/home/icb/zihe.zheng/projects/microglia/data/SEAAD/reduced_microglia_SEAAD_MTG_RNAseq.h5ad')
+rna_mtg = sc.read_h5ad('/lustre/groups/ml01/projects/2024_microglia_zihe.zheng/SEAAD/reduced_microglia_SEAAD_MTG_RNAseq.h5ad')
 # atac_mtg = sc.read_h5ad('/home/icb/zihe.zheng/projects/microglia/data/SEAAD/reduced_microglia_SEAAD_MTG_ATAC.h5ad')
-rna_dlpfc = sc.read_h5ad('/home/icb/zihe.zheng/projects/microglia/data/SEAAD/reduced_microglia_SEAAD_DLPFC_RNA.h5ad')
-rna_sun = sc.read_h5ad('/home/icb/zihe.zheng/projects/microglia/data/SUN/reduced_microglia_MIT_ROSMAP_RNA.h5ad')
+rna_dlpfc = sc.read_h5ad('/lustre/groups/ml01/projects/2024_microglia_zihe.zheng/SEAAD/reduced_microglia_SEAAD_DLPFC_RNA.h5ad')
+rna_sun = sc.read_h5ad('/lustre/groups/ml01/projects/2024_microglia_zihe.zheng/SUN/reduced_microglia_MIT_ROSMAP_RNA.h5ad')
 
 rna_mtg.obs['batch'] = 'seaad_mtg'
 atac_mtg.obs['batch']= 'seaad_mtg'
@@ -66,11 +66,12 @@ vae = mtm.model.MultiVAE(
     },
     integrate_on="batch",
     mmd="marginal",
+    z_dim = 50
 )
 
 vae.train(lr = 0.00005)
 vae.get_model_output()
 adata.obs = adata.obs.astype(str)
-adata.write_h5ad('/home/icb/zihe.zheng/projects/microglia/data/integrated_all_5000atac_no_single_atac.h5ad')
+adata.write_h5ad('/home/icb/zihe.zheng/projects/microglia/data/integrated_all_5000atac_no_single_atac_zdim_50.h5ad')
 
 vae.save('/home/icb/zihe.zheng/projects/microglia/data/vae_model/')

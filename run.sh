@@ -15,9 +15,7 @@
 source /home/icb/zihe.zheng/.bashrc
 
 conda activate multimil
-srun python /home/icb/zihe.zheng/projects/microglia/multimil_all_.py
-# srun python /home/icb/zihe.zheng/projects/microglia/multimil_all_old.py
-# srun python /home/icb/zihe.zheng/projects/microglia/multimil_w_single_atac.py
+srun python /home/icb/zihe.zheng/projects/microglia/integration/multimil_all.py
 
 # conda activate scvi
 # srun python /home/icb/zihe.zheng/projects/microglia/peakvi.py
