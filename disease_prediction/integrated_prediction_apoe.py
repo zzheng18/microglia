@@ -10,7 +10,7 @@ from sklearn.metrics import classification_report, accuracy_score, f1_score, con
 import scipy.stats as st
 
 # read integrated data
-adata = sc.read_h5ad('/lustre/groups/ml01/projects/2024_microglia_zihe.zheng/integrated_data/seaad_rosmap_integrated_harmonized.h5ad')
+adata = sc.read_h5ad('/lustre/groups/ml01/projects/2024_microglia_zihe.zheng/integrated_data/seaad_rosmap_integrated_rna_harmonized.h5ad')
 
 # define parameters
 sample_key = 'Donor_ID'
@@ -68,10 +68,10 @@ mil = mtm.model.MILClassifier(
 )
 
 mil.train(lr=1e-3, max_epochs = 500, progress_bar_refresh_rate=0.5, train_size = 0.8, batch_size = 256, check_val_every_n_epoch=1)
-mil.plot_losses(save = '/home/icb/zihe.zheng/projects/microglia/plots/seaad_rosmap_apoe_mil.pdf')
+mil.plot_losses(save = '/home/icb/zihe.zheng/projects/microglia/plots/seaad_rosmap_apoe_mil_rna.pdf')
 mil.get_model_output()
 
-mil.save('/home/icb/zihe.zheng/projects/microglia/model_mil/seaad_rosmap_apoe_mil/')
+mil.save('/home/icb/zihe.zheng/projects/microglia/model_mil/seaad_rosmap_apoe_mil_rna/')
 
 # set up query data and infernece on query data
 mtm.model.MILClassifier.setup_anndata(
@@ -83,7 +83,7 @@ new_model.get_model_output()
 
 # attach query to adata and save
 adata_both = ad.concat([adata, query]) 
-adata_both.write_h5ad('/lustre/groups/ml01/projects/2024_microglia_zihe.zheng/integrated_data/seaad_rosmap_integrated_harmonized_apoe.h5ad')
+adata_both.write_h5ad('/lustre/groups/ml01/projects/2024_microglia_zihe.zheng/integrated_data/seaad_rosmap_integrated_rna_harmonized_apoe.h5ad')
 
 # calculate scores on the query dataset
 accuracy = accuracy_score(query.obs["apoe_label"], query.obs["predicted_apoe_label"])
