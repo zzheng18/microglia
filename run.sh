@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=gpu_p
-#SBATCH --qos=gpu_priority
+#SBATCH --qos=gpu_normal
 #SBATCH --job-name=multigrate
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:2
@@ -27,4 +27,5 @@ source /home/icb/zihe.zheng/.bashrc
 # srun python /home/icb/zihe.zheng/projects/microglia/integration/sysvi.py
 
 conda activate sysvi
-srun python /home/icb/zihe.zheng/projects/microglia/integration/scvi_all_cell_type_rna.py
+srun python /home/icb/zihe.zheng/projects/microglia/integration/scvi_rosmap_everything.py
+# srun python /home/icb/zihe.zheng/projects/microglia/integration/scvi_all_cell_type_rna.py
